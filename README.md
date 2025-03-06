@@ -1,4 +1,4 @@
-# google-sheets-unity
+# GoogleSheets-Unity
 
 
 ### Install via git URL
