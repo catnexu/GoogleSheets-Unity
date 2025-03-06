@@ -8,7 +8,7 @@ using Google.Apis.Sheets.v4.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     public static class GoogleSheetLoader
     {
@@ -62,7 +62,9 @@ namespace catnexu.googlesheetsforunity.Editor
         public static bool TryLoadByName(string tableName, string sheetName, out List<List<object>> data)
         {
             data = new List<List<object>>();
-            var sheetSettings = GoogleSheetSettings.instance;
+            GoogleSheetSettings sheetSettings = GoogleSheetSettings.Instance;
+            if (!sheetSettings)
+                return false;
             if (!sheetSettings.TryGetTableId(tableName, out string tableId))
             {
                 Debug.LogError("Invalid Table Name!");

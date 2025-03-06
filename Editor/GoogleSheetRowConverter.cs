@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     internal class GoogleSheetRowConverter : IRowConverter
     {

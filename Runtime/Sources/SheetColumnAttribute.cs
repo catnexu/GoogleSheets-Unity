@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace catnexu.googlesheetsforunity
+namespace GoogleSheetsUnity
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class SheetColumnAttribute : Attribute

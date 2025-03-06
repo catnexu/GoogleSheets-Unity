@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     public interface IRowConverter
     {

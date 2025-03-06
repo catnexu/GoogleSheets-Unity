@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     public interface IValueConverter
     {

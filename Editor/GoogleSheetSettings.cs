@@ -1,13 +1,10 @@
 ﻿using System;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
-    [FilePath("Assets/Plugins/google-sheets-for-unity/" + nameof(GoogleSheetSettings) + ".asset", FilePathAttribute.Location.ProjectFolder)]
-    internal sealed class GoogleSheetSettings : ScriptableSingleton<GoogleSheetSettings>
+    internal sealed class GoogleSheetSettings : ScriptableObject
     {
         [SerializeField] private string _googleApplicationName = string.Empty;
         [SerializeField] private string _userName = string.Empty;
@@ -15,6 +12,34 @@ namespace catnexu.googlesheetsforunity.Editor
         [SerializeField] private string _projectId = string.Empty;
         [SerializeField] private string _clientSecret = string.Empty;
         [SerializeField] private GoogleSheetTable[] _tables = Array.Empty<GoogleSheetTable>();
+
+        private const string ConfigName = "com.catnexu.googlesheetsettings";
+
+        public static GoogleSheetSettings Instance
+        {
+            get
+            {
+                if (s_instance == null && !EditorBuildSettings.TryGetConfigObject(ConfigName, out s_instance))
+                    s_instance = CreateConfig();
+                return s_instance;
+            }
+            set
+            {
+                if (s_instance == value)
+                    return;
+
+                if (EditorUtility.IsPersistent(value))
+                {
+                    EditorBuildSettings.AddConfigObject(ConfigName, value, true);
+                    Debug.Log("Google sheets config changed to " + AssetDatabase.GetAssetPath(value));
+                }
+
+                s_instance = value;
+            }
+        }
+
+        private static GoogleSheetSettings s_instance;
+
 
         public string ApplicationName => _googleApplicationName;
         public string User => _userName;
@@ -47,53 +72,27 @@ namespace catnexu.googlesheetsforunity.Editor
             return false;
         }
 
-        public void SaveExternal()
+        [MenuItem(GoogleSheetsPath.MenuPath + "Open config")]
+        private static void OpenOrCreateConfig()
         {
-            Save(true);
-        }
-    }
-
-    [CustomEditor(typeof(GoogleSheetSettings), false)]
-    internal sealed class GoogleSheetSettingsEditor : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            GoogleSheetSettings data = target as GoogleSheetSettings;
-            base.OnInspectorGUI();
-            if (!data)
-                return;
-            if (GUILayout.Button("Save"))
+            GoogleSheetSettings instance = Instance;
+            if (instance)
             {
-                data.SaveExternal();
-                EditorUtility.SetDirty(data);
-                AssetDatabase.SaveAssets();
+                Selection.SetActiveObjectWithContext(instance, instance);
+                EditorGUIUtility.PingObject(instance);
             }
         }
-    }
 
-    internal sealed class GoogleSheetSettingsWindow : EditorWindow
-    {
-        private SerializedObject _data;
+        private static GoogleSheetSettings CreateConfig()
+        {
+            string path = EditorUtility.SaveFilePanelInProject("Create Google Sheets Unity Config", "GoogleSheetsUnity.asset", "asset", "");
+            if (string.IsNullOrEmpty(path))
+                return null;
 
-        [MenuItem(GoogleSheetsPath.MenuPath + "Settings", priority = 1)]
-        private static void InitWindow()
-        {
-            GoogleSheetSettingsWindow window = (GoogleSheetSettingsWindow) EditorWindow.GetWindow(typeof(GoogleSheetSettingsWindow));
-            window.titleContent = new GUIContent(PlayerSettings.productName + " GoogleSheet settings");
-            window.minSize = new Vector2(550, 300);
-            window.Show();
-        }
-
-        private void CreateGUI()
-        {
-            ScrollView scroll = new ScrollView(ScrollViewMode.VerticalAndHorizontal);
-            scroll.Add(new InspectorElement(GoogleSheetSettings.instance));
-            rootVisualElement.Add(scroll);
-        }
-        
-        private void OnDestroy()
-        {
-            DestroyImmediate(GoogleSheetSettings.instance);
+            GoogleSheetSettings instance = CreateInstance<GoogleSheetSettings>();
+            AssetDatabase.CreateAsset(instance, path);
+            EditorUtility.SetDirty(instance);
+            return instance;
         }
     }
 }

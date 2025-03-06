@@ -11,7 +11,7 @@ using Google.Apis.Util.Store;
 using UnityEditor;
 using UnityEngine;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     public static class GoogleSheetsManager
     {
@@ -34,14 +34,14 @@ namespace catnexu.googlesheetsforunity.Editor
             s_service = new SheetsService(new BaseClientService.Initializer
                     {
                             HttpClientInitializer = credential,
-                            ApplicationName = GoogleSheetSettings.instance.ApplicationName,
+                            ApplicationName = GoogleSheetSettings.Instance.ApplicationName,
                     });
         }
 
         private static bool TryAuthorization(out UserCredential credential)
         {
             credential = default;
-            GoogleSheetSettings sheetSettings = GoogleSheetSettings.instance;
+            GoogleSheetSettings sheetSettings = GoogleSheetSettings.Instance;
             string credentialsData = sheetSettings.Credentials;
             if (string.IsNullOrEmpty(credentialsData))
             {

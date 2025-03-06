@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace catnexu.googlesheetsforunity.Editor
+namespace GoogleSheetsUnity.Editor
 {
     public class FloatConverter : ValueConverter<float>
     {
