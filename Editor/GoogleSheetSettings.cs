@@ -6,15 +6,14 @@ namespace GoogleSheetsUnity.Editor
 {
     internal sealed class GoogleSheetSettings : ScriptableObject
     {
+        private const string ConfigName = "com.catnexu.googlesheetsettings";
         [SerializeField] private string _googleApplicationName = string.Empty;
         [SerializeField] private string _userName = string.Empty;
         [SerializeField] private string _clientId = string.Empty;
         [SerializeField] private string _projectId = string.Empty;
         [SerializeField] private string _clientSecret = string.Empty;
         [SerializeField] private GoogleSheetTable[] _tables = Array.Empty<GoogleSheetTable>();
-
-        private const string ConfigName = "com.catnexu.googlesheetsettings";
-
+        
         public static GoogleSheetSettings Instance
         {
             get
@@ -92,6 +91,7 @@ namespace GoogleSheetsUnity.Editor
             GoogleSheetSettings instance = CreateInstance<GoogleSheetSettings>();
             AssetDatabase.CreateAsset(instance, path);
             EditorUtility.SetDirty(instance);
+            Instance = instance;
             return instance;
         }
     }
