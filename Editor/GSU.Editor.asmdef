@@ -2,7 +2,7 @@
     "name": "GSU.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:e11ff6c444320e6499a6cfd282566a3a"
+        "GSU"
     ],
     "includePlatforms": [
         "Editor"
@@ -16,7 +16,7 @@
         "Google.Apis.Auth.dll",
         "Google.Apis.Sheets.v4.dll"
     ],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
